@@ -11,7 +11,7 @@ module RoutingFilter
     end
 
     def run(method, *args, &block)
-      successor = @successor ? lambda { @successor.run(method, *args, &block) } : block
+      successor = @successor ? proc {|path, env| @successor.run(method, *args, &block) } : block
       active ? send(method, *args, &successor) : successor.call(*args)
     end
   end
